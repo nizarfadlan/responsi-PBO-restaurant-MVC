@@ -15,13 +15,16 @@ public class CustomerView {
 
         do {
             pilihanMenuAwal = JOptionPane.showOptionDialog(null, "Fitur restaurant Admin", "Program Restaurant Admin", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, menuAwal, menuAwal[0]);
-
-            if(pilihanMenuAwal == 0) {
-                addCustomer(controller);
-            } else if(pilihanMenuAwal == 1) {
-                loginCustomer(controller);
-            } else {
-                JOptionPane.showMessageDialog(null, "Menu yang dipilih tidak ada", "Error" , JOptionPane.ERROR_MESSAGE);
+            
+            switch(pilihanMenuAwal) {
+                case 0:
+                    addCustomer(controller);
+                    break;
+                case 1:
+                    loginCustomer(controller);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Menu yang dipilih tidak ada", "Error" , JOptionPane.ERROR_MESSAGE);
             }
         } while (pilihanMenuAwal > 2);
     }
@@ -29,29 +32,43 @@ public class CustomerView {
     public void addCustomer(CustomerController customer) {
         String idCustomer;
         boolean checkAndSetID;
+        char lanjut = 'y';
+
         do {
             idCustomer = JOptionPane.showInputDialog(null, "Masukkan id");
             checkAndSetID = customer.setIdCustomer(idCustomer);
-            if (!checkAndSetID)
+            if (!checkAndSetID) {
                 JOptionPane.showMessageDialog(null, "ID customer sudah ada", "Error", JOptionPane.ERROR_MESSAGE);
+                lanjut = JOptionPane.showInputDialog(null, "Apakah ingin lanjut (y/t) ?").charAt(0);
+                if (Character.toLowerCase(lanjut) == 't') break;
+            }
         } while (!checkAndSetID);
 
-        String nama = JOptionPane.showInputDialog(null, "Masukkan nama");
-        String password = JOptionPane.showInputDialog(null, "Masukkan password");
+        if (Character.toLowerCase(lanjut) == 'y') {
+            String nama = JOptionPane.showInputDialog(null, "Masukkan nama");
+            String password = JOptionPane.showInputDialog(null, "Masukkan password");
 
-        boolean result = customer.addCustomer(idCustomer, nama, password);
+            boolean result = customer.addCustomer(idCustomer, nama, password);
 
-        templateView.pesanResult(result, "Pembuatan akun customer");
+            templateView.pesanResult(result, "Pembuatan akun customer");
+        }
     }
 
     public void loginCustomer(CustomerController customer) {
         boolean checkLogin;
+        char lanjut = 'y';
+
         do {
             String idCustomer = JOptionPane.showInputDialog(null, "Masukkan id");
             String password = JOptionPane.showInputDialog(null, "Masukkan password");
             checkLogin = customer.loginCustomer(idCustomer, password);
-            if (!checkLogin)
+            if (!checkLogin) {
                 JOptionPane.showMessageDialog(null, "Login gagal", "Error", JOptionPane.ERROR_MESSAGE);
+                lanjut = JOptionPane.showInputDialog(null, "Apakah ingin lanjut (y/t) ?").charAt(0);
+                if (Character.toLowerCase(lanjut) == 't') break;
+            }
         } while (!checkLogin);
+
+
     }
 }

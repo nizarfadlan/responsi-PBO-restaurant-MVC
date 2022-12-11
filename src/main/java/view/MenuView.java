@@ -16,33 +16,49 @@ public class MenuView {
         do {
             pilihanMenuAwal = JOptionPane.showOptionDialog(null, "Kelola menu makanan", "Program Restaurant Admin", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, menuAwal, menuAwal[0]);
 
-            if(pilihanMenuAwal == 0) {
-                addMenu(controller);
-            } else if(pilihanMenuAwal == 1) {
-                editMenu(controller);
-            } else if(pilihanMenuAwal == 2) {
-                deleteMenu(controller);
-            } else {
-                JOptionPane.showMessageDialog(null, "Menu yang dipilih tidak ada", "Error" , JOptionPane.ERROR_MESSAGE);
+            switch(pilihanMenuAwal) {
+                case 0:
+                    addMenu(controller);
+                    break;
+                case 1:
+                    editMenu(controller);
+                    break;
+                case 2:
+                    deleteMenu(controller);
+                    break;
+                case 3:
+                    System.out.println("Menu utama");
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Menu yang dipilih tidak ada", "Error" , JOptionPane.ERROR_MESSAGE);
             }
         } while (pilihanMenuAwal > 3);
     }
 
+    @SuppressWarnings("unchecked")
     public void addMenu(MenuController controller) {
         String idMenu;
         boolean checkId;
+        char lanjut = 'y';
+
         do {
             idMenu = JOptionPane.showInputDialog(null, "Masukkan id makanan");
             checkId = controller.checkID(idMenu);
-            if (checkId) JOptionPane.showMessageDialog(null, "ID makanan sudah ada", "Error" , JOptionPane.ERROR_MESSAGE);
+            if (checkId) {
+                JOptionPane.showMessageDialog(null, "ID makanan sudah ada", "Error" , JOptionPane.ERROR_MESSAGE);
+                lanjut = JOptionPane.showInputDialog(null, "Apakah ingin lanjut (y/t) ?").charAt(0);
+                if (Character.toLowerCase(lanjut) == 't') break;
+            }
         } while (checkId);
 
-        String nama = JOptionPane.showInputDialog(null, "Masukkan nama makanan");
-        long harga = Long.parseLong(JOptionPane.showInputDialog(null, "Masukkan harga makanan"));
+        if (Character.toLowerCase(lanjut) == 'y') {
+            String nama = JOptionPane.showInputDialog(null, "Masukkan nama makanan");
+            long harga = Long.parseLong(JOptionPane.showInputDialog(null, "Masukkan harga makanan"));
 
-        boolean result = controller.addMenu(idMenu, nama, harga);
+            boolean result = controller.addMenu(idMenu, nama, harga);
 
-        templateView.pesanResult(result, "Tambah makanan");
+            templateView.pesanResult(result, "Tambah makanan");
+        }
     }
 
     public void editMenu(MenuController controller) {
