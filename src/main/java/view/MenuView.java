@@ -35,7 +35,6 @@ public class MenuView {
         } while (pilihanMenuAwal > 3);
     }
 
-    @SuppressWarnings("unchecked")
     public void addMenu(MenuController controller) {
         String idMenu;
         boolean checkId;
