@@ -15,13 +15,16 @@ public class CustomerView {
 
         do {
             pilihanMenuAwal = JOptionPane.showOptionDialog(null, "Fitur restaurant Admin", "Program Restaurant Admin", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, menuAwal, menuAwal[0]);
-            
+
             switch(pilihanMenuAwal) {
                 case 0:
                     addCustomer(controller);
                     break;
                 case 1:
                     loginCustomer(controller);
+                    break;
+                case 2:
+                    System.out.println("Menu utama");
                     break;
                 default:
                     JOptionPane.showMessageDialog(null, "Menu yang dipilih tidak ada", "Error" , JOptionPane.ERROR_MESSAGE);
