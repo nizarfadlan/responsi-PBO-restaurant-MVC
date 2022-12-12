@@ -55,4 +55,12 @@ public class MenuController {
         JSONArray data = model.getAllMenu();
         return data.size();
     }
+
+    public long getPrice(String id) {
+        return model.getPriceMenu(id);
+    }
+
+    public String getNama(String id) {
+        return model.getNamaMenu(id);
+    }
 }

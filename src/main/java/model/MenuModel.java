@@ -58,4 +58,12 @@ public class MenuModel {
 
         return false;
     }
+
+    public long getPriceMenu(String id) {
+        return restaurant.findDataLong("id", id, "harga", file);
+    }
+
+    public String getNamaMenu(String id) {
+        return restaurant.findDataString("id", id, "nama", file);
+    }
 }

@@ -52,4 +52,8 @@ public class CustomerModel {
     public boolean loginCustomer(String id, String password) {
         return restaurant.checkPassword(id, password, file);
     }
+
+    public long getSaldo(String id) {
+        return restaurant.findDataLong("id", id, "saldo", file);
+    }
 }

@@ -47,7 +47,7 @@ public class Restaurant {
             }
         }
 
-        return 0;
+        return -0;
     }
 
     @SuppressWarnings("unchecked")
@@ -107,6 +107,20 @@ public class Restaurant {
     }
 
     @SuppressWarnings("unchecked")
+    public JSONArray getAllDataID(String key, String id, FileSystemCore file) {
+        JSONArray dataCustomer = new JSONArray();
+        JSONArray data = (JSONArray) file.getDataFile().get("data");
+        for (Object parseDatum : data) {
+            JSONObject parseData = (JSONObject) parseDatum;
+            if (Objects.equals(parseData.get(key), id)) {
+                dataCustomer.add(parseData);
+            }
+        }
+
+        return dataCustomer;
+    }
+
+    @SuppressWarnings("unchecked")
     public boolean changePrice(String id, long harga, FileSystemCore file) throws IOException, ParseException {
         JSONArray parseData = (JSONArray) file.getDataFile().get("data");
         for (Object parseDatum : parseData) {
@@ -127,6 +141,48 @@ public class Restaurant {
         for (Object parseDatum : parseData) {
             JSONObject data = (JSONObject) parseDatum;
             if (!Objects.equals(data.get("id"), id)) {
+                newData.add(data);
+            }
+        }
+
+        return file.updateDataFile(2, newData, null);
+    }
+
+    /**
+     *
+     * @param tipe Tipe change jika 1 = replace jumlah, jika 2 = menambah jumlah lama dengan jumlah baru
+     * @param id id data
+     * @param amount data jumlah untuk dimasukkan pada data
+     * @param file file data
+     * @return mengembalikkan apakah berhasil menuliskan pada file
+     * @throws IOException menangani error IO
+     */
+    @SuppressWarnings("unchecked")
+    public boolean changeAmount(int tipe, String id, int amount, FileSystemCore file) throws IOException {
+        JSONArray parseData = (JSONArray) file.getDataFile().get("data");
+        for (Object parseDatum : parseData) {
+            JSONObject data = (JSONObject) parseDatum;
+            if (Objects.equals(data.get("id"), id)) {
+                if (tipe == 1) {
+                    data.put("jumlah", amount);
+                    break;
+                } else if (tipe == 2) {
+                    data.put("jumlah", (long) data.get("jumlah") + amount);
+                    break;
+                }
+            }
+        }
+
+        return file.updateDataFile(2, parseData, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    public boolean deleteAllData(String key, String id, FileSystemCore file) throws IOException {
+        JSONArray newData = new JSONArray();
+        JSONArray parseData = (JSONArray) file.getDataFile().get("data");
+        for (Object parseDatum : parseData) {
+            JSONObject data = (JSONObject) parseDatum;
+            if (!Objects.equals(data.get(key), id)) {
                 newData.add(data);
             }
         }

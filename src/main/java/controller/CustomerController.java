@@ -7,10 +7,14 @@ import view.CustomerView;
 public class CustomerController {
     private final CustomerModel model = new CustomerModel();
     private final CustomerView view = new CustomerView();
-    private boolean login;
+    private final OrderController orderController = new OrderController();
 
     public void pembeliMenuView() {
         view.menu();
+    }
+
+    public void pembeliMenuView(String id) {
+        view.menuAfterLogin(id, orderController);
     }
 
     @SuppressWarnings("unchecked")
@@ -29,7 +33,18 @@ public class CustomerController {
     }
 
     public boolean loginCustomer(String id, String password) {
-        login = model.loginCustomer(id, password);
-        return login;
+        return model.loginCustomer(id, password);
+    }
+
+    public long depositSaldo(String id, long uang) {
+        return model.setSaldo(1, id, uang);
+    }
+
+    public long saldoForBuy(String id, long uang) {
+        return model.setSaldo(2, id, uang);
+    }
+
+    public long getSaldo(String id) {
+        return model.getSaldo(id);
     }
 }
